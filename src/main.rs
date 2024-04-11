@@ -45,17 +45,6 @@ async fn main() {
         }
     });
 
-    // db.insert_ticket_data(
-    //     ChatId(144441960),
-    //     TicketData {
-    //         departure_datetime: chrono_tz::Europe::Kyiv
-    //             .with_ymd_and_hms(2024, 4, 10, 15, 49, 0)
-    //             .unwrap(),
-    //         train_number: "705".to_owned(),
-    //     },
-    // )
-    // .unwrap();
-
     let mut notify_before_train_desc = NOTIFY_BEFORE_TRAIN;
     notify_before_train_desc.sort_by(|a, b| b.cmp(a));
 
