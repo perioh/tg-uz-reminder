@@ -55,6 +55,10 @@ impl FromStr for DelayedTrains {
 
         let mut delayed_trains = vec![];
         for train in delayed_trains_iterator {
+            //message about the absence of delays is by some reason contained in list of delayed trains
+            if train.eq("Поїздів що затримуються не знайдено.") {
+                return Ok(DelayedTrains(vec![]));
+            }
             let (numbers, rest) = train
                 .split_once(' ')
                 .ok_or(UzParseError::GetTrainNumbers(train.to_owned()))?;
