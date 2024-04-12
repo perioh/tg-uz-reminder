@@ -1,5 +1,5 @@
 /target
-.env
 logs
 libssl_dev
 build.sh
+.env
