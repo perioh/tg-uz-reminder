@@ -2,6 +2,6 @@
 pub enum TelegramErrors {
     #[error("No document is attached")]
     NoDocumentAttached,
-    #[error("No document is attached")]
+    #[error("Teloxide request error: {0}")]
     TeloxideRequest(#[from] teloxide::errors::RequestError),
 }

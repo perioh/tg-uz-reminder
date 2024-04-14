@@ -81,11 +81,13 @@ async fn main() {
                     {
                         entry.insert(*timespan);
                         return Some(user_train);
+                    } else if user_train.departure_datetime < kyiv_time_now {
+                        entry.insert(*timespan);
                     }
                 }
 
                 if entry.len() == notify_before_train_desc.len() {
-                    debug!(%user,?user_train, "all notifications sent");
+                    debug!(%user,?user_train, "no notifications to send");
                     if let Err(e) = db.remove_user_train(user, user_train) {
                         warn!(%e,"removing user from db after notifications")
                     }
@@ -110,18 +112,10 @@ async fn main() {
 }
 
 fn kyiv_time() -> DateTime<Tz> {
-    let local_time = chrono::offset::Local::now();
+    let local_time = chrono::offset::Utc::now();
+    let kyiv_time = Kyiv.from_utc_datetime(&local_time.naive_utc());
 
-    //unfailable
-    Kyiv.with_ymd_and_hms(
-        local_time.year(),
-        local_time.month(),
-        local_time.day(),
-        local_time.hour(),
-        local_time.minute(),
-        local_time.second(),
-    )
-    .unwrap()
+    kyiv_time
 }
 
 fn init_tracing() -> Result<WorkerGuard, Box<dyn Error>> {

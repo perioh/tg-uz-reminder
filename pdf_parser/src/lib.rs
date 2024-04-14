@@ -46,7 +46,6 @@ pub fn parse_departure_data_from_pdf(
 
     //it must not fail, and I can't use another way to get inner value :-\
     let departure_datetime = Kyiv.from_local_datetime(&naive).unwrap();
-
     let train_number_line = string_data
         .split('\n')
         .find(|line| line.starts_with("Прізвище, Ім’я"))
