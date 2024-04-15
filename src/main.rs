@@ -9,6 +9,7 @@ use consts::SLEEP_BEFORE_FETCH_TRAINS;
 use database::Database;
 use mydb::MyDb;
 use pdf_parser::TicketData;
+use std::env;
 use std::{
     collections::{HashMap, HashSet},
     error::Error,
@@ -119,9 +120,11 @@ fn kyiv_time() -> DateTime<Tz> {
 }
 
 fn init_tracing() -> Result<WorkerGuard, Box<dyn Error>> {
+    let log_file_prefix = env::var("LOG_FILE_PREFIX").expect("LOG_FILE_PREFIX env var not set");
+
     let file_appender = RollingFileAppender::builder()
         .rotation(Rotation::DAILY)
-        .filename_prefix("uzbot.log")
+        .filename_prefix(log_file_prefix)
         .build("logs")?;
     let (non_blocking, guard) = tracing_appender::non_blocking(file_appender);
 
